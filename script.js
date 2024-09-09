@@ -455,4 +455,29 @@ console.log(movements.filter(depositFunc));
 //Flat and Flat methods --- ES2019
 
 const array = [1, [2, 3, 4], [5, 6], 7, [8, 9]];
+const arrayDeep = [1, [[2, 3], 4], [5, 6], 7, [8, 9]];
 console.log(array.flat());
+console.log(arrayDeep.flat(2));
+
+///Using flat() method
+
+// const accountMovement = accounts.map(acc => acc.movements);
+// console.log(accountMovement);
+// const allMovements = accountMovement.flat();
+// console.log(allMovements);
+// const overallMovement = allMovements.reduce((acc, mov) => acc + mov, 0);
+// console.log(overallMovement);
+
+//flat method using method chaining
+const totalMovement = accounts
+  .map(acc => acc.movements)
+  .flat()
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(totalMovement);
+
+//flatMap --- map() and flat() are always almost used together in practice| ONLY goes one leel deep unlike flat() where you can specific the levels flat(1 or 2 or 3)
+
+const totalMovement2 = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((acc, mov) => acc + mov, 0);
+console.log(totalMovement2);
