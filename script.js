@@ -62,7 +62,7 @@ const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
 //Display Movements
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = "";
   movements.forEach(function (mov, i) {
     const depWith = mov > 0 ? "deposit" : "withdrawal";
@@ -481,3 +481,24 @@ const totalMovement2 = accounts
   .flatMap(acc => acc.movements)
   .reduce((acc, mov) => acc + mov, 0);
 console.log(totalMovement2);
+
+//Sorting --- Mutate original array| sorts by converting numbers to string
+const owners = ["Melinda", "Ben", "Jack", "Jude", "Adams"];
+console.log(owners.sort());
+console.log(owners);
+
+//Number
+// console.log(movements);
+
+//return < 0,  A, B (keep order)
+//return > 0, B, A (switch order)
+// movements.sort((a, b) => {
+//   if (a > b) return 1;
+//   if (a < b) return -1;
+//   else return 0;
+// });
+
+movements.sort((a, b) => a - b);
+console.log(movements);
+movements.sort((a, b) => b - a);
+console.log(movements);
