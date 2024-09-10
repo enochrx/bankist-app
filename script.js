@@ -546,3 +546,26 @@ labelBalance.addEventListener("click", function () {
 
   //const movUI2 = [...document.querySelectorAll(".movements__value")]
 });
+
+//Array Method practice
+const allDepositsSum = accounts
+  .flatMap(acc => acc.movements)
+  .filter(dep => dep > 0)
+  .reduce((acc, dep) => acc + dep, 0);
+console.log(allDepositsSum);
+
+const depsAbove1000 = accounts
+  .flatMap(acc => acc.movements)
+  .filter(dep => dep > 1000).length;
+
+console.log(depsAbove1000);
+//using reduce method
+const deps1000Red = accounts
+  .flatMap(acc => acc.movements)
+  // .reduce((count, dep) => (dep >= 1000 ? count + 1 : count), 0);------ Using prefixed ++ operator
+  .reduce((count, dep) => (dep >= 1000 ? ++count : count), 0);
+console.log(deps1000Red);
+
+//How prefixed increment ++ value works
+let g = 10;
+console.log(g++); //will return initial alue 10 first
