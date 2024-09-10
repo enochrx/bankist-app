@@ -514,3 +514,34 @@ movements.sort((a, b) => a - b);
 console.log(movements);
 movements.sort((a, b) => b - a);
 console.log(movements);
+
+//////////////////Filling////////////////////
+//conventional ways of creatimg arrays
+const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+console.log(arr);
+console.log(new Array(1, 2, 3, 4, 5, 6));
+
+//Empty arrays + fill method
+const u = new Array(9);
+console.log(u);
+console.log(u.fill(3, 1, 7)); // first argument is the element to fill in and the 2nd and 3rd are the beginning and end position resp.ly
+
+//Array .from
+const j = Array.from({ length: 8 }, (_, i) => i + 1); //underscore is a throwaway variale and it's used if the parameter is not gonna be used but the order of arrangement is important to access the next/2nd parameter
+console.log(j);
+
+const randomDice = Array.from(
+  { length: 100 },
+  (_, i) => Math.trunc(Math.random(i) * 6) + 1
+);
+console.log(randomDice);
+
+labelBalance.addEventListener("click", function () {
+  const movementsUI = Array.from(
+    document.querySelectorAll(".movements__value"),
+    el => Number(el.textContent.replace("€", ""))
+  );
+  console.log(movementsUI);
+
+  //const movUI2 = [...document.querySelectorAll(".movements__value")]
+});
