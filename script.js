@@ -568,4 +568,62 @@ console.log(deps1000Red);
 
 //How prefixed increment ++ value works
 let g = 10;
-console.log(g++); //will return initial alue 10 first
+// console.log(g++); //will return initial alue 10 first
+// console.log(g); //returns 11
+console.log(++g); //returns 11 at start
+
+//using reduce method to create objects or arrays
+
+// const sums = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce(
+//     (sum, mov) => {
+//       // mov > 0 ? (sum.depos += mov) : (sum.withdr += mov);
+
+//       sum[mov > 0 ? "depos" : "withdr"] += mov;
+//       return sum;
+//     },
+//     { depos: 0, withdr: 0 }
+//   );
+// console.log(sums);
+
+const sumsArr = accounts
+  .flatMap(acc => acc.movements)
+  .reduce(
+    (sum, mov) => {
+      mov > 0 ? sum + mov : sum + mov;
+
+      // sum[mov > 0 ?  : ] += mov;
+      return sum;
+    }
+    // [0, 0]
+  );
+console.log(sumsArr);
+
+const convertTitleCase = title => {
+  const exceptions = [
+    "a",
+    "an",
+    "and",
+    "the",
+    "but",
+    "or",
+    "is",
+    "on",
+    "of",
+    "in",
+    "with",
+  ];
+  const cap = str => str[0].toUpperCase() + str.slice(1);
+
+  const titleCase = title
+    .toLowerCase()
+    .split(" ")
+    .map(word => (exceptions.includes(word) ? word : cap(word)));
+
+  return titleCase;
+};
+console.log(convertTitleCase("This is another sample here"));
+console.log(convertTitleCase("This is a sample of a title"));
+console.log(convertTitleCase("and here is simple sample of a title"));
+console.log(convertTitleCase("and a SHORT sample of a title"));
