@@ -666,7 +666,15 @@ const dogs = [
 ];
 
 // 1.
-dogs.forEach(dog => (dog.recFoodPortion = dog.weight ** 0.75 * 28));
+dogs.forEach(dog => (dog.recFoodPortion = Math.trunc(dog.weight ** 0.75 * 28)));
 console.log(dogs);
 
 //2.
+const dogSarah = dogs.find(dog => dog.owners.includes("Sarah"));
+console.log(
+  `Sarah's dog is eating too ${
+    dogSarah.curFood > dogSarah.recFoodPortion ? "much" : "little"
+  }`
+);
+
+const ownersEatTooMuch = dogs.filter(dog => dog.curFood > dog.recFoodPortion);
