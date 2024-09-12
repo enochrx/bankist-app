@@ -677,4 +677,12 @@ console.log(
   }`
 );
 
-const ownersEatTooMuch = dogs.filter(dog => dog.curFood > dog.recFoodPortion);
+const ownersEatTooMuch = dogs
+  .filter(dog => dog.curFood > dog.recFoodPortion)
+  .flatMap(dog => dog.owners);
+const ownersEatTooLittle = dogs
+  .filter(dog => dog.curFood < dog.recFoodPortion)
+  .flatMap(dog => dog.owners);
+
+console.log(ownersEatTooLittle);
+console.log(ownersEatTooMuch);
