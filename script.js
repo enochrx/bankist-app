@@ -710,3 +710,9 @@ const okayDogs = dogs.filter(okayEatingDogs);
 console.log(okayDogs);
 
 //8
+const copyDogs = dogs.map(dog => dog);
+
+const sortedRecFood = copyDogs.sort(
+  (a, b) => a.recFoodPortion - b.recFoodPortion
+);
+console.log(sortedRecFood);
