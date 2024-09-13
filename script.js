@@ -168,7 +168,7 @@ btnLogin.addEventListener("click", function (e) {
   });
   // console.log(currentAccount);
 
-  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+  if (currentAccount?.pin === +inputLoginPin.value) {
     //Display UI & welcome message
     labelWelcome.textContent = `Welcome, ${currentAccount.owner.split(" ")[0]}`;
     containerApp.style.opacity = 100;
@@ -185,7 +185,7 @@ btnLogin.addEventListener("click", function (e) {
 
 btnTransfer.addEventListener("click", function (e) {
   e.preventDefault();
-  const amount = Number(inputTransferAmount.value);
+  const amount = +inputTransferAmount.value;
   const receiverAcc = accounts.find(
     acc => acc.username === inputTransferTo.value
   );
@@ -212,7 +212,7 @@ btnTransfer.addEventListener("click", function (e) {
 
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
-  const amount = Number(inputLoanAmount.value);
+  const amount = +inputLoanAmount.value;
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     currentAccount.movements.push(amount);
     //
@@ -226,7 +226,7 @@ btnClose.addEventListener("click", function (e) {
 
   if (
     currentAccount.username === inputCloseUsername.value &&
-    currentAccount.pin === Number(inputClosePin.value)
+    currentAccount.pin === +inputClosePin.value
   ) {
     // console.log('it works');
     const index = accounts.findIndex(
@@ -742,3 +742,37 @@ const sortedRecFood = copyDogs.sort(
   (a, b) => a.recFoodPortion - b.recFoodPortion
 );
 console.log(sortedRecFood);
+
+/////////////////////////////////////////////////////
+//Numbers, Dates, Intl and Timers
+
+console.log(23 === 23.0);
+
+//Base 10 -- 0 to 9, 1/10 = 0.1, 3/10 = 0.333333333
+//Binary base 2 -- 0, 1
+console.log(0.1 + 0.2);
+console.log(0.1 + 0.2 === 0.3); // returns false
+
+//converting strings to number
+console.log(+"23");
+console.log(+"23"); // when JS sees a + operator, it does type coerdion and convert the operands to numbers
+
+//Parsing
+console.log(Number.parseInt("30px")); // takes out the number, as to start with a number to work 'r34' won't work
+
+console.log(Number.parseFloat("2.5rem")); //it reads the secimals too
+console.log(Number.parseInt("2.5rem"));
+
+//ParseFloat and parseInt are both global fxns -- they can work without the "Number" but it is encouraged as Namespace
+
+//we use isFinite to check if a value is a number in JS
+console.log(Number.isFinite(20));
+console.log(Number.isFinite("20"));
+console.log(Number.isFinite(+"20X"));
+console.log(Number.isFinite(23 / 0));
+
+//Use isNaN to check if value is NaN
+console.log(Number.isNaN(20));
+console.log(Number.isNaN("20"));
+console.log(Number.isNaN(+"20X"));
+console.log(Number.isNaN(23 / 0));
