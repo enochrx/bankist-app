@@ -119,19 +119,19 @@ const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(move => move > 0)
     .reduce((accu, move) => accu + move, 0);
-  labelSumIn.textContent = `${incomes}€`;
+  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
 
   const out = acc.movements
     .filter(move => move < 0)
     .reduce((accu, move) => accu + move, 0);
-  labelSumOut.textContent = `${Math.abs(out)}€`;
+  labelSumOut.textContent = `${Math.abs(out.toFixed(2))}€`;
 
   const interest = acc.movements
     .filter(move => move > 0)
     .map(move => (move * acc.interestRate) / 100)
     .filter((int, i, arr) => int >= 1)
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}€`;
+  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
 //Create Username
@@ -776,3 +776,45 @@ console.log(Number.isNaN(20));
 console.log(Number.isNaN("20"));
 console.log(Number.isNaN(+"20X"));
 console.log(Number.isNaN(23 / 0));
+
+//Math methods
+console.log(Math.sqrt(25));
+console.log(25 ** (1 / 2)); // ** - raise to power (1/2)- is the square root of 2
+console.log(8 ** (1 / 3)); //cubic root
+
+//max number
+console.log(Math.max(5, 6, 3, 2, 56, 3));
+console.log(Math.max(6, 3, 4, "36", 9, 7)); //dos type coercion
+console.log(Math.max(6, 4, 2, "16px", 9)); //does not work with parsing
+
+console.log(Math.min(8, 4, 5, 6, 3, 2, 9));
+//min number
+console.log(Math.PI * Number.parseFloat("5.5rem") ** 2);
+console.log(Math.trunc(Math.random() * 6) + 1); //dice
+
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min) + 1) + min;
+
+randomInt(5, 10);
+
+//Rounding Integers
+console.log(Math.trunc(23.3));
+
+console.log(Math.round(24.3));
+console.log(Math.round(24.9));
+
+console.log(Math.ceil(24.3)); //Math.ceil() rounds up
+console.log(Math.ceil(24.9));
+
+console.log(Math.floor(24.3)); //Math.floor() rounds down
+console.log(Math.floor("24.9")); //does type coercion
+
+//You might think that floor and trunc are very similar, and indeed they do the same when we are dealing with positive numbers. So basically floor and trunc, both cut off the decimal part when we are dealing with positive numbers. However, for negative numbers, it doesn't work this way. So actually a floor is a little bit better than trunc because it works in all situations, no matter if we're dealing with positive or negative numbers.
+
+console.log(Math.floor(-25.9)); //rounding works the other way around for negative values
+console.log(Math.trunc(-25.9)); // it just gets truncated
+
+//Rounding decimals
+console.log((5.6).toFixed(0)); //toFixed does not do type coercion
+console.log(+(2.6).toFixed(3)); // '+' -- to convert the returns string to Number
+console.log(+(6.3456).toFixed(2));
