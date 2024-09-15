@@ -180,6 +180,7 @@ btnLogin.addEventListener("click", function (e) {
     //Display balance
     //Display summary
     updateUI(currentAccount);
+  } else {
   }
 });
 
@@ -818,3 +819,16 @@ console.log(Math.trunc(-25.9)); // it just gets truncated
 console.log((5.6).toFixed(0)); //toFixed does not do type coercion
 console.log(+(2.6).toFixed(3)); // '+' -- to convert the returns string to Number
 console.log(+(6.3456).toFixed(2));
+
+//////////Remainder Operator////////////
+console.log(7 % 2); //returns the remainder
+console.log(7 / 2);
+
+console.log(8 / 3);
+console.log(8 % 3); //returns the remainder
+
+labelBalance.addEventListener("click", function () {
+  [...document.querySelectorAll(".movements__row")].forEach((row, i) => {
+    if (i % 2 === 0) row.style.backgroundColor = "pink";
+  });
+});
