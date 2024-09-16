@@ -849,3 +849,25 @@ console.log(967566928675700907008729937735n * 9776587624343242646568971n);
 const hugeNum = 7522415862685735869723523098276n;
 const smol = 763;
 console.log(hugeNum * BigInt(smol));
+//there are two exceptions to this, which are the comparison operators and the plus operator when working with strings.
+
+//Exception
+console.log(30n > 18); // true
+console.log(40n === 40); // false -- strict equality operation does not do type coercion
+console.log(50n == 50); //true
+console.log(70n == "70");
+// Math operator does not work as well
+//concat
+console.log(hugeNum + " is a big number, wow!!!");
+
+//Divisions
+console.log(21n / 4n); // returns nearest BigInt
+
+//Creating dates
+const moment = new Date();
+console.log(moment);
+
+console.log(new Date("Sep 15, 2023"));
+
+console.log(new Date(2050, 11, 20, 13, 54, 6));
+//the month here in JavaScript is zero based.
