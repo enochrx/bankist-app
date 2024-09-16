@@ -181,6 +181,9 @@ btnLogin.addEventListener("click", function (e) {
     //Display summary
     updateUI(currentAccount);
   } else {
+    labelWelcome.textContent = `Wrong Password, Try again...`;
+    inputLoginUsername.value = inputLoginPin.value = "";
+    inputLoginPin.blur();
   }
 });
 
