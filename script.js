@@ -838,3 +838,5 @@ labelBalance.addEventListener("click", function () {
 
 //BigInt
 console.log(2 ** 53 - 1); //Biggest number Js can interprete
+console.log(Number.MAX_SAFE_INTEGER);
+console.log(Number.MIN_SAFE_INTEGER);
