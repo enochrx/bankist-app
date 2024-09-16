@@ -864,10 +864,31 @@ console.log(hugeNum + " is a big number, wow!!!");
 console.log(21n / 4n); // returns nearest BigInt
 
 //Creating dates
-const moment = new Date();
+/*const moment = new Date();
 console.log(moment);
 
 console.log(new Date("Sep 15, 2023"));
 
 console.log(new Date(2050, 11, 20, 13, 54, 6));
 //the month here in JavaScript is zero based.
+
+console.log(new Date(0)); //Unix Time
+console.log(new Date(3 * 24 * 60 * 60 * 1000)); //timestamp */
+
+//Working with dates
+const inFuture = new Date(2068, 5, 32, 54, 43);
+console.log(inFuture);
+console.log(inFuture.getFullYear());
+console.log(inFuture.getMonth()); //zero based
+console.log(inFuture.getDate());
+console.log(inFuture.getDay()); // Day of the week
+console.log(inFuture.getHours());
+console.log(inFuture.getMinutes());
+console.log(inFuture.getSeconds());
+console.log(inFuture.toISOString());
+
+console.log(inFuture.getTime()); //timestamp is the minutes that has passed since 1970(Unix time)
+console.log(new Date(3108606180000));
+
+const currentTime = Date.now();
+console.log(currentTime);
