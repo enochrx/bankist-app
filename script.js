@@ -840,3 +840,12 @@ labelBalance.addEventListener("click", function () {
 console.log(2 ** 53 - 1); //Biggest number Js can interprete
 console.log(Number.MAX_SAFE_INTEGER);
 console.log(Number.MIN_SAFE_INTEGER);
+
+//this n here basically transforms a regular number, into a BigInt number. ES 2020. What is not possible is to mix BigInt with regular numbers.
+console.log(86765867029868575785128960873789675642839n);
+
+console.log(967566928675700907008729937735n * 9776587624343242646568971n);
+
+const hugeNum = 7522415862685735869723523098276n;
+const smol = 763;
+console.log(hugeNum * BigInt(smol));
