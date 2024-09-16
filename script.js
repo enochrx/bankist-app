@@ -835,3 +835,6 @@ labelBalance.addEventListener("click", function () {
     if (i % 2 === 0) row.style.backgroundColor = "pink";
   });
 });
+
+//BigInt
+console.log(2 ** 53 - 1); //Biggest number Js can interprete
