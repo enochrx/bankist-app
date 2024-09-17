@@ -38,8 +38,8 @@ const account2 = {
     "2024-01-25T14:18:46.235Z",
     "2024-02-05T16:33:06.386Z",
     "2024-04-10T14:43:26.374Z",
-    "2024-06-25T18:49:59.371Z",
-    "2024-07-26T12:01:20.894Z",
+    "2024-09-15T18:49:59.371Z",
+    "2024-09-16T12:01:20.894Z",
   ],
   currency: "USD",
   locale: "en-US",
@@ -57,8 +57,8 @@ const account3 = {
     "2024-01-12T15:18:46.235Z",
     "2024-02-08T18:33:06.386Z",
     "2024-04-15T12:43:26.374Z",
-    "2024-06-22T10:49:59.371Z",
-    "2024-07-20T19:01:20.894Z",
+    "2024-09-16T10:49:59.371Z",
+    "2024-09-17T19:01:20.894Z",
   ],
   currency: "YEN",
   locale: "ja-JP",
@@ -74,10 +74,10 @@ const account4 = {
     "2023-10-31T07:48:16.867Z",
     "2023-12-22T08:04:23.907Z",
     "2024-01-23T19:18:46.235Z",
-    "2024-02-08T13:33:06.386Z",
-    "2024-04-16T10:43:26.374Z",
-    "2024-06-21T11:49:59.371Z",
-    "2024-08-25T14:01:20.894Z",
+    "2024-07-08T13:33:06.386Z",
+    "2024-08-16T10:43:26.374Z",
+    "2024-09-14T11:49:59.371Z",
+    "2024-09-15T14:01:20.894Z",
   ],
   currency: "USD",
   locale: "en-US",
@@ -112,7 +112,7 @@ const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
 //////Display Movements///////
-const formatMovementDate = function (date) {
+const formatMovementDate = function (date, locale) {
   const calcDaysPassed = (date1, date2) =>
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
@@ -122,10 +122,11 @@ const formatMovementDate = function (date) {
   if (daysPassed === 1) return "Yesterday";
   if (daysPassed <= 7) return `${daysPassed} days ago`;
 
-  const dayMov = `${date.getDate()}`.padStart(2, 0);
-  const monthMov = `${date.getMonth() + 1}`.padStart(2, 0);
-  const yearMov = date.getFullYear();
-  return `${dayMov}/${monthMov}/${yearMov}`;
+  // const dayMov = `${date.getDate()}`.padStart(2, 0);
+  // const monthMov = `${date.getMonth() + 1}`.padStart(2, 0);
+  // const yearMov = date.getFullYear();
+  // return `${dayMov}/${monthMov}/${yearMov}`;
+  return new Intl.DateTimeFormat(locale).format(date);
 };
 
 const displayMovements = function (acc, sort = false) {
@@ -140,7 +141,7 @@ const displayMovements = function (acc, sort = false) {
 
     //Movement dates
     const date = new Date(acc.movementsDates[i]);
-    const displayDate = formatMovementDate(date);
+    const displayDate = formatMovementDate(date, acc.locale);
 
     //Movements
     const html = `
@@ -214,16 +215,6 @@ updateUI(currentAccount);
 containerApp.style.opacity = 100;
 
 //Experimenting API
-const now = new Date();
-const options = {
-  hour: "numeric",
-  minute: "numeric",
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-  weekday: "long",
-};
-labelDate.textContent = new Intl.DateTimeFormat("en-GB", options).format(now);
 
 btnLogin.addEventListener("click", function (e) {
   //prevent form from submitting
@@ -240,13 +231,30 @@ btnLogin.addEventListener("click", function (e) {
     containerApp.style.opacity = 100;
 
     //Date variables
+    const now = new Date();
+    const options = {
+      hour: "numeric",
+      minute: "numeric",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      weekday: "long",
+    };
 
-    const day = `${now.getDate()}`.padStart(2, 0);
-    const month = `${now.getMonth() + 1}`.padStart(2, 0);
-    const year = now.getFullYear();
-    const hours = `${now.getHours()}`.padStart(2, 0);
-    const minutes = `${now.getMinutes()}`.padStart(2, 0);
-    labelDate.textContent = `${day}/${month}/${year} ${hours}:${minutes}`;
+    // const locale = navigator.language;
+    // console.log(locale);
+
+    labelDate.textContent = new Intl.DateTimeFormat(
+      currentAccount.locale,
+      options
+    ).format(now);
+
+    // const day = `${now.getDate()}`.padStart(2, 0);
+    // const month = `${now.getMonth() + 1}`.padStart(2, 0);
+    // const year = now.getFullYear();
+    // const hours = `${now.getHours()}`.padStart(2, 0);
+    // const minutes = `${now.getMinutes()}`.padStart(2, 0);
+    // labelDate.textContent = `${day}/${month}/${year} ${hours}:${minutes}`;
 
     //Clear input field
     inputLoginUsername.value = inputLoginPin.value = "";
