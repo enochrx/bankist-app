@@ -6,57 +6,81 @@
 
 // Data
 const account1 = {
-  owner: "Jonas Schmedtmann",
+  owner: "Enoch DamilaRay",
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 
   movementsDates: [
-    "2019-11-18T21:31:17.178Z",
-    "2019-12-23T07:42:02.383Z",
-    "2020-01-28T09:15:04.904Z",
-    "2020-04-01T10:17:24.185Z",
-    "2020-05-08T14:11:59.604Z",
-    "2020-05-27T17:01:17.194Z",
-    "2020-07-11T23:36:17.929Z",
-    "2020-07-12T10:51:36.790Z",
+    "2023-11-18T21:31:17.178Z",
+    "2023-12-23T07:42:02.383Z",
+    "2024-01-28T09:15:04.904Z",
+    "2024-04-01T10:17:24.185Z",
+    "2024-05-08T14:11:59.604Z",
+    "2024-05-27T17:01:17.194Z",
+    "2024-07-11T23:36:17.929Z",
+    "2024-07-12T10:51:36.790Z",
   ],
   currency: "EUR",
   locale: "pt-PT", // de-DE
 };
 
 const account2 = {
-  owner: "Jessica Davis",
+  owner: "Damilola Baby",
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
 
   movementsDates: [
-    "2019-11-01T13:15:33.035Z",
-    "2019-11-30T09:48:16.867Z",
-    "2019-12-25T06:04:23.907Z",
-    "2020-01-25T14:18:46.235Z",
-    "2020-02-05T16:33:06.386Z",
-    "2020-04-10T14:43:26.374Z",
-    "2020-06-25T18:49:59.371Z",
-    "2020-07-26T12:01:20.894Z",
+    "2023-11-01T13:15:33.035Z",
+    "2023-11-30T09:48:16.867Z",
+    "2023-12-25T06:04:23.907Z",
+    "2024-01-25T14:18:46.235Z",
+    "2024-02-05T16:33:06.386Z",
+    "2024-04-10T14:43:26.374Z",
+    "2024-06-25T18:49:59.371Z",
+    "2024-07-26T12:01:20.894Z",
   ],
   currency: "USD",
   locale: "en-US",
 };
 
 const account3 = {
-  owner: "Steven Thomas Williams",
+  owner: "Caleb Skip Mercy",
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
+  movementsDates: [
+    "2023-11-04T16:15:33.035Z",
+    "2023-11-31T05:48:16.867Z",
+    "2023-12-27T04:04:23.907Z",
+    "2024-01-12T15:18:46.235Z",
+    "2024-02-08T18:33:06.386Z",
+    "2024-04-15T12:43:26.374Z",
+    "2024-06-22T10:49:59.371Z",
+    "2024-07-20T19:01:20.894Z",
+  ],
+  currency: "YEN",
+  locale: "yn-JPY",
 };
 
 const account4 = {
-  owner: "Sarah Smith",
+  owner: "Damauraaaa of LA",
   movements: [430, 1000, 700, 50, 90],
   interestRate: 1,
   pin: 4444,
+  movementsDates: [
+    "2023-09-04T16:15:33.035Z",
+    "2023-10-31T07:48:16.867Z",
+    "2023-12-22T08:04:23.907Z",
+    "2024-01-23T19:18:46.235Z",
+    "2024-02-08T13:33:06.386Z",
+    "2024-04-16T10:43:26.374Z",
+    "2024-06-21T11:49:59.371Z",
+    "2024-08-25T14:01:20.894Z",
+  ],
+  currency: "USD",
+  locale: "en-US",
 };
 
 const accounts = [account1, account2, account3, account4];
@@ -87,19 +111,30 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
-//Display Movements
-const displayMovements = function (movements, sort = false) {
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+//////Display Movements///////
+
+const displayMovements = function (acc, sort = false) {
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
 
   containerMovements.innerHTML = "";
 
   movs.forEach(function (mov, i) {
     const depWith = mov > 0 ? "deposit" : "withdrawal";
+
+    const date = new Date(acc.movementsDates[i]);
+    const dayMov = `${date.getDate()}`.padStart(2, 0);
+    const monthMov = `${date.getMonth() + 1}`.padStart(2, 0);
+    const yearMov = date.getFullYear();
+    const displayDate = `${dayMov}/${monthMov}/${yearMov}`;
+
     const html = `
         <div class="movements__row">
           <div class="movements__type movements__type--${depWith}">${
       i + 1
     } ${depWith}</div>
+    <div class="movements__date">${displayDate}</div>
           <div class="movements__value">${mov.toFixed(2)}€</div>
         </div>`;
 
@@ -149,7 +184,7 @@ console.log(accounts);
 
 const updateUI = function (acc) {
   //Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
   //Display balance
   calcDisplayBalance(acc);
   //Display summary
@@ -158,6 +193,11 @@ const updateUI = function (acc) {
 
 //Event Handlers
 let currentAccount;
+
+//DUMMY LOGIN
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
 
 btnLogin.addEventListener("click", function (e) {
   //prevent form from submitting
@@ -172,6 +212,16 @@ btnLogin.addEventListener("click", function (e) {
     //Display UI & welcome message
     labelWelcome.textContent = `Welcome, ${currentAccount.owner.split(" ")[0]}`;
     containerApp.style.opacity = 100;
+
+    //Date variables
+    const now = new Date();
+    const day = `${now.getDate()}`.padStart(2, 0);
+    const month = `${now.getMonth() + 1}`.padStart(2, 0);
+    const year = now.getFullYear();
+    const hours = `${now.getHours()}`.padStart(2, 0);
+    const minutes = `${now.getMinutes()}`.padStart(2, 0);
+    labelDate.textContent = `${day}/${month}/${year} ${hours}:${minutes}`;
+
     //Clear input field
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
@@ -207,6 +257,10 @@ btnTransfer.addEventListener("click", function (e) {
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
 
+    //Add transfer date
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiverAcc.movementsDates.push(new Date().toISOString());
+
     //Display movements
     //Display balance
     //Display summary
@@ -219,6 +273,9 @@ btnLoan.addEventListener("click", function (e) {
   const amount = Math.floor(inputLoanAmount.value);
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     currentAccount.movements.push(amount);
+
+    //Add transfer date
+    currentAccount.movementsDates.push(new Date().toISOString());
     //
     updateUI(currentAccount);
   }
@@ -252,7 +309,7 @@ btnClose.addEventListener("click", function (e) {
 let sorted = false;
 btnSort.addEventListener("click", e => {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 /////////////////////////////////////////////////
@@ -892,3 +949,8 @@ console.log(new Date(3108606180000));
 
 const currentTime = Date.now();
 console.log(currentTime);
+
+inFuture.setFullYear(2030);
+inFuture.setMonth(9);
+inFuture.setDate(31);
+console.log(inFuture);
