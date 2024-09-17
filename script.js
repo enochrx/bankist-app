@@ -17,9 +17,9 @@ const account1 = {
     "2024-01-28T09:15:04.904Z",
     "2024-04-01T10:17:24.185Z",
     "2024-05-08T14:11:59.604Z",
-    "2024-05-27T17:01:17.194Z",
-    "2024-07-11T23:36:17.929Z",
-    "2024-07-12T10:51:36.790Z",
+    "2024-09-14T17:01:17.194Z",
+    "2024-09-15T23:36:17.929Z",
+    "2024-09-16T10:51:36.790Z",
   ],
   currency: "EUR",
   locale: "pt-PT", // de-DE
@@ -61,7 +61,7 @@ const account3 = {
     "2024-07-20T19:01:20.894Z",
   ],
   currency: "YEN",
-  locale: "yn-JPY",
+  locale: "ja-JP",
 };
 
 const account4 = {
@@ -112,6 +112,21 @@ const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
 //////Display Movements///////
+const formatMovementDate = function (date) {
+  const calcDaysPassed = (date1, date2) =>
+    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+
+  const daysPassed = calcDaysPassed(new Date(), date);
+  console.log(daysPassed);
+  if (daysPassed === 0) return "Today";
+  if (daysPassed === 1) return "Yesterday";
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+
+  const dayMov = `${date.getDate()}`.padStart(2, 0);
+  const monthMov = `${date.getMonth() + 1}`.padStart(2, 0);
+  const yearMov = date.getFullYear();
+  return `${dayMov}/${monthMov}/${yearMov}`;
+};
 
 const displayMovements = function (acc, sort = false) {
   const movs = sort
@@ -123,12 +138,11 @@ const displayMovements = function (acc, sort = false) {
   movs.forEach(function (mov, i) {
     const depWith = mov > 0 ? "deposit" : "withdrawal";
 
+    //Movement dates
     const date = new Date(acc.movementsDates[i]);
-    const dayMov = `${date.getDate()}`.padStart(2, 0);
-    const monthMov = `${date.getMonth() + 1}`.padStart(2, 0);
-    const yearMov = date.getFullYear();
-    const displayDate = `${dayMov}/${monthMov}/${yearMov}`;
+    const displayDate = formatMovementDate(date);
 
+    //Movements
     const html = `
         <div class="movements__row">
           <div class="movements__type movements__type--${depWith}">${
@@ -180,7 +194,7 @@ const createUsername = accs => {
   });
 };
 createUsername(accounts);
-console.log(accounts);
+// console.log(accounts);
 
 const updateUI = function (acc) {
   //Display movements
@@ -195,9 +209,21 @@ const updateUI = function (acc) {
 let currentAccount;
 
 //DUMMY LOGIN
-// currentAccount = account1;
-// updateUI(currentAccount);
-// containerApp.style.opacity = 100;
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
+
+//Experimenting API
+const now = new Date();
+const options = {
+  hour: "numeric",
+  minute: "numeric",
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  weekday: "long",
+};
+labelDate.textContent = new Intl.DateTimeFormat("en-GB", options).format(now);
 
 btnLogin.addEventListener("click", function (e) {
   //prevent form from submitting
@@ -214,7 +240,7 @@ btnLogin.addEventListener("click", function (e) {
     containerApp.style.opacity = 100;
 
     //Date variables
-    const now = new Date();
+
     const day = `${now.getDate()}`.padStart(2, 0);
     const month = `${now.getMonth() + 1}`.padStart(2, 0);
     const year = now.getFullYear();
@@ -954,3 +980,9 @@ inFuture.setFullYear(2030);
 inFuture.setMonth(9);
 inFuture.setDate(31);
 console.log(inFuture);
+
+////////Operations with dates
+// const calcDaysPassed = (date1, date2) =>
+//   Math.abs(date1 - date2) / (1000 * 60 * 60 * 24);
+// const day = calcDaysPassed(new Date(2040, 9, 10), new Date(2040, 10, 30));
+// console.log(day);
