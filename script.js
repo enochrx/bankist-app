@@ -41,18 +41,18 @@ const account2 = {
     "2024-09-15T18:49:59.371Z",
     "2024-09-16T12:01:20.894Z",
   ],
-  currency: "USD",
-  locale: "en-US",
+  currency: "GBP",
+  locale: "en-GB",
 };
 
 const account3 = {
   owner: "Caleb Skip Mercy",
-  movements: [200, -200, 340, -300, -20, 50, 400, -460],
+  movements: [200, -200, 3000, 5000, 7000, 340, -300, -20, 50, 400, -460],
   interestRate: 0.7,
   pin: 3333,
   movementsDates: [
     "2023-11-04T16:15:33.035Z",
-    "2023-11-31T05:48:16.867Z",
+    "2023-11-21T05:48:16.867Z",
     "2023-12-27T04:04:23.907Z",
     "2024-01-12T15:18:46.235Z",
     "2024-02-08T18:33:06.386Z",
@@ -66,7 +66,7 @@ const account3 = {
 
 const account4 = {
   owner: "Damauraaaa of LA",
-  movements: [430, 1000, 700, 50, 90],
+  movements: [430, 1000, 700, 40900, -2000, -5000, -20000, 50, 90],
   interestRate: 1,
   pin: 4444,
   movementsDates: [
@@ -143,6 +143,11 @@ const displayMovements = function (acc, sort = false) {
     const date = new Date(acc.movementsDates[i]);
     const displayDate = formatMovementDate(date, acc.locale);
 
+    const formattedMov = new Intl.NumberFormat(acc.locale, {
+      style: "currency",
+      currency: acc.currency,
+    }).format(mov);
+
     //Movements
     const html = `
         <div class="movements__row">
@@ -150,8 +155,8 @@ const displayMovements = function (acc, sort = false) {
       i + 1
     } ${depWith}</div>
     <div class="movements__date">${displayDate}</div>
-          <div class="movements__value">${mov.toFixed(2)}€</div>
-        </div>`;
+          <div class="movements__value">${formattedMov}</div>
+        </div>`; //mov.toFixed(2)
 
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
@@ -160,8 +165,11 @@ const displayMovements = function (acc, sort = false) {
 //Display Balance
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-
-  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+  const formattedBal = new Intl.NumberFormat(acc.locale, {
+    style: "currency",
+    currency: acc.currency,
+  }).format(acc.balance);
+  labelBalance.textContent = `${formattedBal}`;
 };
 
 //Display Summary
@@ -994,3 +1002,19 @@ console.log(inFuture);
 //   Math.abs(date1 - date2) / (1000 * 60 * 60 * 24);
 // const day = calcDaysPassed(new Date(2040, 9, 10), new Date(2040, 10, 30));
 // console.log(day);
+
+///Intl Numbers
+const options = {
+  style: "currency", //unit --mph,temp| percent |currency
+  // unit: "celsius",
+  currency: "EUR",
+  // useGrouping: false
+};
+
+const numbr = 30783857.98;
+console.log("US:", new Intl.NumberFormat("en-US").format(numbr));
+console.log("Germany:", new Intl.NumberFormat("de-DE").format(numbr));
+console.log(
+  navigator.language,
+  new Intl.NumberFormat(navigator.language).format(numbr)
+);
