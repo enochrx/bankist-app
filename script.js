@@ -4,7 +4,7 @@
 /////////////////////////////////////////////////
 // BANKIST APP
 
-// Data
+//SECTION Data
 const account1 = {
   owner: "Enoch DamilaRay",
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
@@ -47,7 +47,7 @@ const account2 = {
 
 const account3 = {
   owner: "Caleb Skip Mercy",
-  movements: [200, -200, 3000, 5000, 7000, 340, -300, -20, 50, 400, -460],
+  movements: [200, -200, 3000, 5000, 7000, -300, 400, -460],
   interestRate: 0.7,
   pin: 3333,
   movementsDates: [
@@ -66,7 +66,7 @@ const account3 = {
 
 const account4 = {
   owner: "Damauraaaa of LA",
-  movements: [430, 1000, 700, 40900, -2000, -5000, -20000, 50, 90],
+  movements: [430, 1000, 700, 409000, -2000, -5000, -20000, 90],
   interestRate: 1,
   pin: 4444,
   movementsDates: [
@@ -84,8 +84,9 @@ const account4 = {
 };
 
 const accounts = [account1, account2, account3, account4];
+//!SECTION
 
-// Elements
+//SECTION DOM Elements
 const labelWelcome = document.querySelector(".welcome");
 const labelDate = document.querySelector(".date");
 const labelBalance = document.querySelector(".balance__value");
@@ -110,8 +111,20 @@ const inputTransferAmount = document.querySelector(".form__input--amount");
 const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
+//!SECTION
 
-//////Display Movements///////
+//SECTION - Functions
+//ANCHOR - User Interface Function
+const updateUI = function (acc) {
+  //Display movements
+  displayMovements(acc);
+  //Display balance
+  calcDisplayBalance(acc);
+  //Display summary
+  calcDisplaySummary(acc);
+};
+
+//ANCHOR MovementsDate Function
 const formatMovementDate = function (date, locale) {
   const calcDaysPassed = (date1, date2) =>
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
@@ -129,6 +142,17 @@ const formatMovementDate = function (date, locale) {
   return new Intl.DateTimeFormat(locale).format(date);
 };
 
+//ANCHOR Currency Function
+const formatCurrency = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(value);
+};
+
+//!SECTION
+
+//ANCHOR Display Movements
 const displayMovements = function (acc, sort = false) {
   const movs = sort
     ? acc.movements.slice().sort((a, b) => a - b)
@@ -143,10 +167,10 @@ const displayMovements = function (acc, sort = false) {
     const date = new Date(acc.movementsDates[i]);
     const displayDate = formatMovementDate(date, acc.locale);
 
-    const formattedMov = new Intl.NumberFormat(acc.locale, {
-      style: "currency",
-      currency: acc.currency,
-    }).format(mov);
+    // const formattedMov = new Intl.NumberFormat(acc.locale, {
+    //   style: "currency",
+    //   currency: acc.currency,
+    // }).format(mov);
 
     //Movements
     const html = `
@@ -155,44 +179,61 @@ const displayMovements = function (acc, sort = false) {
       i + 1
     } ${depWith}</div>
     <div class="movements__date">${displayDate}</div>
-          <div class="movements__value">${formattedMov}</div>
+          <div class="movements__value">${formatCurrency(
+            mov,
+            acc.locale,
+            acc.currency
+          )}</div>
         </div>`; //mov.toFixed(2)
 
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
 };
 
-//Display Balance
+//ANCHOR Display Balance
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  const formattedBal = new Intl.NumberFormat(acc.locale, {
-    style: "currency",
-    currency: acc.currency,
-  }).format(acc.balance);
-  labelBalance.textContent = `${formattedBal}`;
+
+  labelBalance.textContent = `${formatCurrency(
+    acc.balance,
+    acc.locale,
+    acc.currency
+  )}`;
 };
 
-//Display Summary
+//ANCHOR Display Summary
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(move => move > 0)
     .reduce((accu, move) => accu + move, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+  labelSumIn.textContent = `${formatCurrency(
+    incomes,
+    acc.locale,
+    acc.currency
+  )}`;
 
   const out = acc.movements
     .filter(move => move < 0)
     .reduce((accu, move) => accu + move, 0);
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
+  labelSumOut.textContent = `${formatCurrency(
+    Math.abs(out),
+    acc.locale,
+    acc.currency
+  )}`;
 
   const interest = acc.movements
     .filter(move => move > 0)
     .map(move => (move * acc.interestRate) / 100)
     .filter((int, i, arr) => int >= 1)
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  labelSumInterest.textContent = `${formatCurrency(
+    interest,
+    acc.locale,
+    acc.currency
+  )}`;
 };
 
-//Create Username
+//ANCHOR - Create Username
 const createUsername = accs => {
   accs.forEach(function (acc) {
     acc.username = acc.owner
@@ -205,25 +246,40 @@ const createUsername = accs => {
 createUsername(accounts);
 // console.log(accounts);
 
-const updateUI = function (acc) {
-  //Display movements
-  displayMovements(acc);
-  //Display balance
-  calcDisplayBalance(acc);
-  //Display summary
-  calcDisplaySummary(acc);
+//ANCHOR - Timer
+const logOutTimer = function () {
+  let time = 120;
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    //print the remaining time to UI in each call
+    labelTimer.textContent = `${min}:${sec}`;
+    //at 0 second, stop timer and log out user
+    if (time === 0) {
+      clearInterval(timer);
+      //Display UI & welcome message
+      currentAccount = null;
+      labelWelcome.textContent = `Log in to get started`;
+      containerApp.style.opacity = 0;
+    }
+    //decrese by 1s
+    time--;
+  };
+  tick();
+  const timer = setInterval(tick, 1000);
+  return timer;
 };
 
-//Event Handlers
-let currentAccount;
+//SECTION Event Handlers
+let currentAccount, timer; //global variables of the parent scope
 
 //DUMMY LOGIN
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
 
 //Experimenting API
-
+//ANCHOR Login Button
 btnLogin.addEventListener("click", function (e) {
   //prevent form from submitting
   e.preventDefault();
@@ -238,7 +294,7 @@ btnLogin.addEventListener("click", function (e) {
     labelWelcome.textContent = `Welcome, ${currentAccount.owner.split(" ")[0]}`;
     containerApp.style.opacity = 100;
 
-    //Date variables
+    //NOTE Date variables
     const now = new Date();
     const options = {
       hour: "numeric",
@@ -268,6 +324,9 @@ btnLogin.addEventListener("click", function (e) {
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
 
+    //Logout Timer
+    if (timer) clearTimeout(timer); //check first if timer  is still running on other acc
+    timer = logOutTimer(); //reassign variable
     //Display movements
     //Display balance
     //Display summary
@@ -279,6 +338,7 @@ btnLogin.addEventListener("click", function (e) {
   }
 });
 
+//ANCHOR - Transfer Button
 btnTransfer.addEventListener("click", function (e) {
   e.preventDefault();
   const amount = +inputTransferAmount.value;
@@ -307,23 +367,36 @@ btnTransfer.addEventListener("click", function (e) {
     //Display balance
     //Display summary
     updateUI(currentAccount);
+
+    //reset timer
+    clearInterval(timer);
+    timer = logOutTimer();
   }
 });
+
+//ANCHOR - Loan Button
 
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
   const amount = Math.floor(inputLoanAmount.value);
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    currentAccount.movements.push(amount);
+    setTimeout(function () {
+      currentAccount.movements.push(amount);
 
-    //Add transfer date
-    currentAccount.movementsDates.push(new Date().toISOString());
-    //
-    updateUI(currentAccount);
+      //Add transfer date
+      currentAccount.movementsDates.push(new Date().toISOString());
+      //Update UI
+      updateUI(currentAccount);
+
+      //reset timer
+      clearInterval(timer);
+      timer = logOutTimer();
+    }, 4000);
   }
   inputLoanAmount.value = "";
 });
 
+//ANCHOR - Close Acoount Button
 btnClose.addEventListener("click", function (e) {
   e.preventDefault();
 
@@ -346,6 +419,7 @@ btnClose.addEventListener("click", function (e) {
   inputCloseUsername.value = inputClosePin.value = "";
 });
 
+//ANCHOR Sort Button
 //set a state variable outside event handler
 
 let sorted = false;
@@ -354,6 +428,8 @@ btnSort.addEventListener("click", e => {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
+//!SECTION
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -1018,3 +1094,36 @@ console.log(
   navigator.language,
   new Intl.NumberFormat(navigator.language).format(numbr)
 );
+
+//Timers: setTimeout & setInterval
+//setTimeout receives 1. callback fxn, 2. time in , 3. cb fxn parameter, 4. cb fxn parameter
+setTimeout(() => console.log("You ordered a brand new SUV"), 5000);
+
+console.log("Waiting for delivery...");
+
+//As soon as JavaScript hits this line of code here, it will simply basically keep counting the time in the background, and register this callback function to be called after that time has elapsed, and then immediately, JavaScript will move on to the next line, and this mechanism is called Asynchronous JavaScript.
+
+const ing = ["Salad Dressings", "Chicken flasks"];
+const chipotleOrder = setTimeout(
+  (ingr1, ingr2) =>
+    console.log(
+      `I need a plate of chipotle with ${ingr1} and ${ingr2} as toppings`
+    ),
+  7000,
+  ...ing
+);
+
+console.log("Your order is being processed...");
+
+//to clear the timer
+if (ing.includes("Chicken flasks")) clearTimeout(chipotleOrder);
+
+//setInterval
+// setInterval(function () {
+//   //now already declared above
+//   const now = new Date();
+//   const hours = `${now.getHours()}`.padStart(2, 0);
+//   const minutes = `${now.getMinutes()}`.padStart(2, 0);
+//   const seconds = `${now.getSeconds()}`.padStart(2, 0);
+//   console.log(`${hours}:${minutes}:${seconds}`);
+// }, 1000);
